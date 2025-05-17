@@ -14,6 +14,8 @@ job.start();
 
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json({ limit: "10mb" })); // Adjust the limit as needed
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 app.use("/api/auth", authRoutes)
 app.use("/api/books", bookRoutes)
