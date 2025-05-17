@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { API_URL } from '../../constants/api';
 import { useAuthStore } from '../../store/authStore';
 import { Image } from 'expo-image';
-import { formatPublishDate } from '../../lib/utils';
 import ProfileHeader from '../../components/ProfileHeader';
 import LogoutButton from '../../components/LogoutButton';
 import styles from "../../assets/styles/profile.styles";
@@ -15,7 +14,7 @@ import COLORS from '../../constants/colors';
 
 export default function Profile() {
 
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -36,7 +35,7 @@ export default function Profile() {
             if (!response.ok) throw new Error(data.message || "Something went wrong");
 
             setBooks(data.books);
-            console.log("Books:", data.books);
+            console.log("Books:", data);
         } catch (error) {
             console.error("Error fetching books:", error);
             Alert.alert("Error", "Failed to load profile data. Pull down to refresh.");

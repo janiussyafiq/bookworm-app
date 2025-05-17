@@ -98,7 +98,7 @@ router.delete("/:id", protectRoute, async (req, res) => {
 // get recommended books by the logged in user
 router.get("/user", protectRoute, async (req, res) => {
     try {
-        const books = await Book.find({ user: req.params.id })
+        const books = await Book.find({ user: req.params._id })
             .sort({ createdAt: -1 }); // desc
 
         res.status(200).json({ books });
