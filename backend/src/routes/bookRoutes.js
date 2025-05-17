@@ -98,10 +98,10 @@ router.delete("/:id", protectRoute, async (req, res) => {
 // get recommended books by the logged in user
 router.get("/user", protectRoute, async (req, res) => {
     try {
-        const books = await Book.find({ user: req.params._id })
+        const books = await Book.find({ user: req.params.id })
             .sort({ createdAt: -1 }); // desc
 
-        res.status(200).json(books);
+        res.status(200).json({ books });
     } catch (error) {
         console.log("Error fetching books:", error);
         res.status(500).json({ message: error.message });

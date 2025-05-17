@@ -36,6 +36,7 @@ export default function Profile() {
             if (!response.ok) throw new Error(data.message || "Something went wrong");
 
             setBooks(data.books);
+            console.log("Books:", data.books);
         } catch (error) {
             console.error("Error fetching books:", error);
             Alert.alert("Error", "Failed to load profile data. Pull down to refresh.");
