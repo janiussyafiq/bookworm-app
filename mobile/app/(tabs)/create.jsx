@@ -78,6 +78,7 @@ export default function Create() {
             const imageType = fileType ? `image/${fileType.toLowerCase()}` : "image/jpeg";
 
             const imageDataUrl = `data:${imageType};base64,${imageBase64}`;
+            console.log("imageDataUrl size (bytes):", imageDataUrl.length);
 
             const response = await fetch(`${API_URL}/api/books`, {
                 method: "POST",
