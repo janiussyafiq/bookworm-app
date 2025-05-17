@@ -81,7 +81,7 @@ router.delete("/:id", protectRoute, async (req, res) => {
             } catch (error) {
                 console.log("Error deleting image from cloudinary:", error);
                 return res.status(500).json({ message: "Error deleting image from cloudinary" });
-                
+
             }
         }
 
@@ -98,8 +98,8 @@ router.delete("/:id", protectRoute, async (req, res) => {
 // get recommended books by the logged in user
 router.get("/user", protectRoute, async (req, res) => {
     try {
-        const books = await Book.find({ user: req.params.id })
-        .sort({ createdAt: -1 }); // desc
+        const books = await Book.find({ user: req.params._id })
+            .sort({ createdAt: -1 }); // desc
 
         res.status(200).json(books);
     } catch (error) {
