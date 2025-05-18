@@ -10,7 +10,8 @@ import { connectDB } from "./lib/db.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-job.start();
+// only start when we need the server to remain active
+// job.start(); 
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" })); // Adjust the limit as needed
