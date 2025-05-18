@@ -18,13 +18,14 @@ Bookworm App is a full-stack mobile application that allows users to share and e
 |-------------------------------|------------------------------|
 | ![Home Page](./assets/home.png) | ![Profile Page](./assets/profile.png) |
 
-| **Create Page**              | **Login Page**               |
-|-------------------------------|------------------------------|
-| ![Create Page](./assets/create.png) | ![Login Page](./assets/login.png) |
 
-| **Signup Page**              |
-|-------------------------------|
-| ![Signup Page](./assets/signup.png) |
+| **Create Page**              | **Create Page**               |
+|-------------------------------|------------------------------|
+| ![Create Page](./assets/create.png) | ![Create Page](./assets/create-2.png) |
+
+| **Signup Page**              | **Login Page**               |
+|-------------------------------|------------------------------|
+| ![Signup Page](./assets/signup.png) | ![Login Page](./assets/login.png) |
 
 ---
 
