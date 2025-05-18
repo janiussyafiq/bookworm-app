@@ -11,6 +11,17 @@ Bookworm App is a full-stack mobile application that allows users to share and e
 - **Responsive Design**: Optimized for mobile devices using React Native.
 
 ---
+## Screenshot
+
+Here’s an example of the app in action:
+
+![Home Page](./assets/home.png)
+![Create Page](./assets/create.png)
+![Profile Page](./assets/profile.png)
+![Signup Page](./assets/signup.png)
+![Login Page](./assets/login.png)
+
+---
 
 ## Tech Stack
 ### Frontend
