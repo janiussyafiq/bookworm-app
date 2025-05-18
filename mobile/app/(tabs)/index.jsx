@@ -106,7 +106,7 @@ export default function Index() {
         return stars;
     };
 
-    if (loading) return <Loader />
+    if (loading && !refreshing) return <Loader />
 
     return (
         <View style={styles.container}>

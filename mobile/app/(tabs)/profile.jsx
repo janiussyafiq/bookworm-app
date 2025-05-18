@@ -1,26 +1,33 @@
-import { View, Alert, Text, FlatList, TouchableOpacity } from 'react-native'
+import {
+    View, Alert, Text, FlatList,
+    TouchableOpacity, ActivityIndicator, RefreshControl
+} from 'react-native'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { API_URL } from '../../constants/api';
 import { useAuthStore } from '../../store/authStore';
 import { Image } from 'expo-image';
+
 import ProfileHeader from '../../components/ProfileHeader';
 import LogoutButton from '../../components/LogoutButton';
 import styles from "../../assets/styles/profile.styles";
-
+import Loader from '../../components/Loader';
 import COLORS from '../../constants/colors';
 
 
 export default function Profile() {
 
-    const [books, setBooks] = useState();
-    const [isLoading, setIsLoading] = useState(false);
+    const [books, setBooks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [deleteBookId, setDeleteBookId] = useState(null);
 
     const { token } = useAuthStore();
 
     const router = useRouter();
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const fetchData = async () => {
         try {
@@ -34,8 +41,8 @@ export default function Profile() {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || "Something went wrong");
 
-            setBooks(data.books);
-            console.log("Books:", data);
+            setBooks(data);
+
         } catch (error) {
             console.error("Error fetching books:", error);
             Alert.alert("Error", "Failed to load profile data. Pull down to refresh.");
@@ -50,6 +57,7 @@ export default function Profile() {
 
     const handleDeleteBook = async (bookId) => {
         try {
+            setDeleteBookId(bookId);
             const response = await fetch(`${API_URL}/api/books/${bookId}`, {
                 method: "DELETE",
                 headers: {
@@ -63,6 +71,8 @@ export default function Profile() {
         } catch (error) {
             console.error("Error deleting book:", error);
             Alert.alert("Error", "Failed to delete book recommendation.");
+        } finally {
+            setDeleteBookId(null);
         }
     };
 
@@ -102,7 +112,11 @@ export default function Profile() {
                 style={styles.deleteButton}
                 onPress={() => confirmDelete(item._id)}
             >
-                <Ionicons name="trash-outline" size={20} color={COLORS.primary} />
+                {deleteBookId === item._id ? (
+                    <ActivityIndicator size="small" color={COLORS.primary} />
+                ) : (
+                    <Ionicons name="trash-outline" size={20} color={COLORS.primary} />
+                )}
             </TouchableOpacity>
 
         </View>
@@ -124,6 +138,15 @@ export default function Profile() {
         return stars;
     };
 
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchData();
+        await sleep(500); // simulate network delay
+        setRefreshing(false);
+    };
+
+    if (isLoading && !refreshing) return <Loader />;
+
     return (
         <View style={styles.container}>
             <ProfileHeader />
@@ -141,6 +164,15 @@ export default function Profile() {
                 keyExtractor={(item) => item._id}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.booksList}
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                        colors={[COLORS.primary]}
+                        tintColor={COLORS.primary}
+                    />
+                }
                 ListEmptyComponent={
                     <View style={styles.emptyContainer}>
                         <Ionicons name="book-outline" size={50} color={COLORS.textSecondary} />
@@ -150,8 +182,6 @@ export default function Profile() {
                         </TouchableOpacity>
                     </View>
                 }
-            // onRefresh={fetchData}
-            // refreshing={isLoading}
             // onEndReachedThreshold={0.5}
             // onEndReached={() => {
             //     if (!isLoading) {
